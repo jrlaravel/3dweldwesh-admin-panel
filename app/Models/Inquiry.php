@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Inquiry extends Model
+{
+    protected $table = 'inquiry';
+
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'message',
+        'location',
+        'fencing_needed',
+        'project_type',
+    ];
+}
