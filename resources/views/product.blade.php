@@ -2,6 +2,10 @@
 @section('title')
     Product
 @endsection
+@section('css')
+    <!-- DataTables -->
+    <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+@endsection
 @section('content')
 @component('common-components.breadcrumb')
     @slot('pagetitle') 3dWeldmesh @endslot
@@ -24,7 +28,7 @@
                 <button class="btn btn-dark" onclick="openAddModal()">+ Add</button>
             </div>
 
-            <table class="table">
+            <table class="table" id="product-datatable">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -99,8 +103,19 @@
         </div>
     </div>
 </div>
+@endsection
 
+@section('script')
+    <!-- Required datatable js -->
+    <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
+@endsection
+
+@section('script-bottom')
 <script>
+$(document).ready(function() {
+    $('#product-datatable').DataTable();
+});
+
 function openAddModal() {
     productForm.action = "{{ route('store-product') }}";
     productForm.reset();

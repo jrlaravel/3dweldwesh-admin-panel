@@ -39,6 +39,12 @@
                         Dashboard
                     </a>
                 </li>
+                <li>
+                   <a href="{{route('inquiry')}}">
+                       <i class="uil-comment-alt-message"></i>
+                       Inquiry
+                   </a>
+               </li>
 
                 <li>
                     <a href="{{route('testimonial')}}">
@@ -58,12 +64,6 @@
                     <a href="{{route('service')}}">
                         <i class="uil-comment-alt-message"></i>
                         Service
-                    </a>
-                </li>
-                 <li>
-                    <a href="{{route('inquiry')}}">
-                        <i class="uil-comment-alt-message"></i>
-                        Inquiry
                     </a>
                 </li>
                 

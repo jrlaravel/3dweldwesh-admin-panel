@@ -3,6 +3,10 @@
 @section('title')
     Inquiry
 @endsection
+@section('css')
+    <!-- DataTables -->
+    <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+@endsection
 
 @section('content')
 @component('common-components.breadcrumb')
@@ -26,7 +30,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table align-middle table-bordered">
+                <table class="table align-middle table-bordered" id="inquiry-datatable">
                     <thead class="table-light">
                         <tr>
                             <th>No.</th>
@@ -42,10 +46,15 @@
                     </thead>
 
                     <tbody>
-                        @forelse ($inquiries as $inquiry)
+                        @foreach ($inquiries as $inquiry)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $inquiry->name }}</td>
+                                <td>
+                                    {{ $inquiry->name }}
+                                    @if($inquiry->created_at->diffInHours(now()) < 24)
+                                        <span class="badge bg-danger ms-1">New</span>
+                                    @endif
+                                </td>
                                 <td>{{ $inquiry->email }}</td>
                                 <td>{{ $inquiry->phone }}</td>
                                 <td>{{ $inquiry->location }}</td>
@@ -62,13 +71,7 @@
                                     {{ $inquiry->created_at->format('d M Y') }}
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="9" class="text-center text-muted">
-                                    No inquiries found
-                                </td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -76,4 +79,19 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+    <!-- Required datatable js -->
+    <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
+@endsection
+
+@section('script-bottom')
+<script>
+$(document).ready(function() {
+    $('#inquiry-datatable').DataTable({
+        "order": [[ 8, "desc" ]] // Sort by Date column by default
+    });
+});
+</script>
 @endsection

@@ -2,6 +2,10 @@
 @section('title')
     Testimonial
 @endsection
+@section('css')
+    <!-- DataTables -->
+    <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+@endsection
 @section('content')
     @component('common-components.breadcrumb')
         @slot('pagetitle')
@@ -34,7 +38,7 @@
                         <button class="btn btn-dark" onclick="openAddModal()">+ Add</button>
                 </div>
                 <div class="table-responsive">
-                    <table class="table align-middle table-nowrap table-check">
+                    <table class="table align-middle table-nowrap table-check" id="testimonial-datatable">
                         <thead>
                             <tr>
                                 <th scope="col">No.</th>
@@ -145,9 +149,21 @@
 
 
 
+@endsection
+
+@section('script')
+    <!-- Required datatable js -->
+    <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function openAddModal() {
+@endsection
+
+@section('script-bottom')
+<script>
+    $(document).ready(function() {
+        $('#testimonial-datatable').DataTable();
+    });
+
+    function openAddModal() {
             document.getElementById('testimonialModalLabel').innerText = "Add Testimonial";
             document.getElementById('testimonialForm').action = "{{ route('store-testimonial') }}";
             document.getElementById('testimonialSubmitBtn').innerText = "Add Testimonial";

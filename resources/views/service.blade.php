@@ -2,7 +2,10 @@
 @section('title')
     Service
 @endsection
-
+@section('css')
+    <!-- DataTables -->
+    <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+@endsection
 @section('content')
 @component('common-components.breadcrumb')
     @slot('pagetitle') 3dWeldmesh @endslot
@@ -35,7 +38,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table align-middle">
+                <table class="table align-middle" id="service-datatable">
                     <thead>
                         <tr>
                             <th>No.</th>
@@ -143,15 +146,27 @@
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.1/tinymce.min.js"></script>
+@endsection
+
+@section('script')
+    <!-- Required datatable js -->
+    <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.1/tinymce.min.js"></script>
+@endsection
+
+@section('script-bottom')
 <script>
+$(document).ready(function() {
+    $('#service-datatable').DataTable();
+});
+
 tinymce.init({
     selector: 'textarea', // applies to all textareas
     height: 300,
     plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help wordcount',
     toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
 });
-        
+
 function openAddModal() {
     document.getElementById('serviceModalLabel').innerText = "Add Service";
     document.getElementById('serviceForm').action = "{{ route('store-service') }}";
