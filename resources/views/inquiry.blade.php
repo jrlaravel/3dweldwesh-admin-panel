@@ -6,7 +6,7 @@
 
 @section('content')
 @component('common-components.breadcrumb')
-    @slot('pagetitle') Arisique @endslot
+    @slot('pagetitle') 3dWeldmesh @endslot
     @slot('title') Inquiry @endslot
 @endcomponent
 

@@ -46,11 +46,14 @@ class ServiceController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('services','public');
-            $media = MediaManager::create(['path'=>$path]);
+            $media = MediaManager::create(['path'=>$path,'name'=>$request->file('image')->getClientOriginalName()]);
             $service->image_id = $media->id;
         }
 
-        $service->update($request->only('name','description'));
+        $service->update([
+                'name' => $request->name ?? $service->name,
+                'description' => $request->description ?? $service->description
+                ]);
 
         return back()->with('success','Service updated');
     }

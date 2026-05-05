@@ -5,7 +5,7 @@
 @section('content')
     @component('common-components.breadcrumb')
         @slot('pagetitle')
-            Arisique
+            3dWeldmesh
         @endslot
         @slot('title')
             Testimonial

@@ -19,6 +19,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'description' => 'required',
             'image' => 'required'
         ]);
 
@@ -31,6 +32,7 @@ class ProductController extends Controller
 
         Product::create([
             'name' => $request->name,
+            'description' => $request-description,
             'image_id' => $media->id
         ]);
 
@@ -48,11 +50,14 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products','public');
-            $media = MediaManager::create(['path'=>$path]);
+            $media = MediaManager::create(['path'=>$path, 'name' => $request->file('image')->getClientOriginalName() ]);
             $product->image_id = $media->id;
         }
 
-        $product->update(['name'=>$request->name]);
+        $product->update([
+            'name'=>$request->name,
+            'description' => $request->description
+            ]);
 
         return back()->with('success','Product updated');
     }

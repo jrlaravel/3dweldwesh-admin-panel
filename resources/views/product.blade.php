@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 @component('common-components.breadcrumb')
-    @slot('pagetitle') Arisique @endslot
+    @slot('pagetitle') 3dWeldmesh @endslot
     @slot('title') Product @endslot
 @endcomponent
 
@@ -29,6 +29,7 @@
                     <tr>
                         <th>No</th>
                         <th>Name</th>
+                        <th>Description</th>
                         <th>Image</th>
                         <th>Action</th>
                     </tr>
@@ -38,6 +39,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $product->name }}</td>
+                            <td>{{ $product->description }}</td>
                             <td>
                                 @if($product->image)
                                     <img src="{{ asset('storage/'.$product->image->path) }}" height="50">
@@ -77,6 +79,11 @@
                         <label>Name</label>
                         <input type="text" class="form-control" name="name" id="product_name" required>
                     </div>
+                    
+                     <div class="mb-3">
+                        <label>Description</label>
+                        <input type="text" class="form-control" name="description" id="product_description" required>
+                    </div>
 
                     <div class="mb-3">
                         <label>Image</label>
@@ -110,6 +117,7 @@ function editProduct(id) {
             productForm.action = "{{ route('update-product') }}";
             product_id.value = data.id;
             product_name.value = data.name;
+            product_description.value = data.description;
             if (data.image) {
                 product_preview.src = `/storage/${data.image.path}`;
             }

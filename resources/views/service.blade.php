@@ -5,7 +5,7 @@
 
 @section('content')
 @component('common-components.breadcrumb')
-    @slot('pagetitle') Arisique @endslot
+    @slot('pagetitle') 3dWeldmesh @endslot
     @slot('title') Service @endslot
 @endcomponent
 
@@ -50,7 +50,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $service->name }}</td>
-                                <td>{{ $service->description }}</td>
+                                <td>{!! $service->description !!}</td>
                                 <td>
                                     @if ($service->image)
                                         <img src="{{ asset('storage/'.$service->image->path) }}"
@@ -97,7 +97,7 @@
                     <input type="hidden" name="id" id="service_id">
 
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label>Name</label>
                             <input type="text"
                                    class="form-control"
@@ -106,16 +106,16 @@
                                    required>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label>Description</label>
                             <textarea class="form-control"
-                                      name="description"
-                                      id="service_description"
-                                      rows="3"
-                                      required></textarea>
+                                  name="description"
+                                  id="service_description"
+                                  rows="3"></textarea>
+
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label>Image</label>
                             <input type="file"
                                    class="form-control"
@@ -143,7 +143,15 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.1/tinymce.min.js"></script>
 <script>
+tinymce.init({
+    selector: 'textarea', // applies to all textareas
+    height: 300,
+    plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste help wordcount',
+    toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
+});
+        
 function openAddModal() {
     document.getElementById('serviceModalLabel').innerText = "Add Service";
     document.getElementById('serviceForm').action = "{{ route('store-service') }}";
@@ -161,17 +169,22 @@ function editService(id) {
     fetch(`/edit-service/${id}`)
         .then(res => res.json())
         .then(data => {
+
             document.getElementById('serviceModalLabel').innerText = "Edit Service";
             document.getElementById('serviceForm').action = "{{ route('update-service') }}";
             document.getElementById('serviceSubmitBtn').innerText = "Update Service";
 
             document.getElementById('service_id').value = data.id;
             document.getElementById('service_name').value = data.name;
-            document.getElementById('service_description').value = data.description;
+
+            // ✅ IMPORTANT: set TinyMCE content properly
+            tinymce.get('service_description').setContent(data.description ?? '');
 
             if (data.image) {
                 document.getElementById('service_preview').src =
                     `/storage/${data.image.path}`;
+            } else {
+                document.getElementById('service_preview').src = '';
             }
 
             document.getElementById('imageHint').innerText =
